@@ -1,0 +1,89 @@
+[
+  {
+    "x": 0,
+    "y": 980,
+    "width": 710,
+    "height": 200,
+    "isObstacle": false,
+    "visible": false,
+    "hasLeftWall": true,
+    "hasRightWall": false
+  },
+
+  {
+    "x": 0,
+    "y": 980,
+    "width": 710,
+    "height": 200,
+    "isObstacle": false,
+    "visible": false,
+    "hasLeftWall": false,
+    "hasRightWall": true
+  },
+
+  {
+    "x": 1110,
+    "y": 970,
+    "width": 800,
+    "height": 200,
+    "isObstacle": false,
+    "visible": false,
+    "hasLeftWall": true,
+    "hasRightWall": false
+  },
+
+  {
+    "x": 0,
+    "y": 690,
+    "width": 480,
+    "height": 20,
+    "isObstacle": false,
+    "visible": false,
+    "hasLeftWall": false,
+    "hasRightWall": false
+  },
+
+  {
+    "x": 475,
+    "y": 410,
+    "width": 480,
+    "height": 20,
+    "isObstacle": false,
+    "visible": false,
+    "hasLeftWall": false,
+    "hasRightWall": false
+  },
+
+  {
+    "x": 0,
+    "y": 690,
+    "width": 270,
+    "height": 440,
+    "isObstacle": false,
+    "visible": false,
+    "hasLeftWall": false,
+    "hasRightWall": true
+  },
+
+  {
+    "x": 720,
+    "y": 1060,
+    "width": 380,
+    "height": 440,
+    "isObstacle": false,
+    "visible": false,
+    "hasLeftWall": false,
+    "hasRightWall": false
+  },
+
+  {
+    "x": 850,
+    "y": 765,
+    "width": 115,
+    "height": 20,
+    "isObstacle": false,
+    "visible": false,
+    "hasLeftWall": false,
+    "hasRightWall": false
+  }
+]
