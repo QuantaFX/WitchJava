@@ -1,0 +1,2 @@
+Main-Class: Game
+Class-Path: lib/json-20250107.jar
