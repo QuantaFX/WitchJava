@@ -20,6 +20,8 @@ public class Game extends JPanel implements Runnable, KeyListener {
 
     private ArrayList<Platform> platforms = new ArrayList<>(); // List of platforms
 
+    private boolean isAttacking = false; // Tracks whether the player is attacking
+
     public static void main(String[] args) {
         // Create the game window
         JFrame frame = new JFrame("Side Scroller Game");
@@ -138,6 +140,22 @@ public class Game extends JPanel implements Runnable, KeyListener {
             }
         }
 
+        // Update attack animation
+        if (isAttacking) {
+            int currentFrame = player.getCurrentFrame();
+            if (currentFrame >= player.getTotalFrames() - 1) {
+                // Reset to idle animation after attack finishes
+                isAttacking = false;
+                System.out.println("Allowed");
+                player.unlockAnimation(); // Unlock the animation
+                if (velocityX == 0) {
+                    player.setSpriteSheet("assets/Blue_witch/B_witch_idle.png", 21, 39, true);
+                } else {
+                    player.setSpriteSheet("assets/Blue_witch/B_witch_run.png", 21, 41, false);
+                }
+            }
+        }
+
         if (player.getX() < 0) {
             player.move(5, 0); // Prevent moving off the left edge
         }
@@ -252,6 +270,8 @@ public class Game extends JPanel implements Runnable, KeyListener {
         }
     }
 
+    private boolean isRunning = false;
+
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -261,17 +281,37 @@ public class Game extends JPanel implements Runnable, KeyListener {
             System.out.println("Collision boxes: " + (showCollisionBoxes ? "Visible" : "Hidden"));
         }
 
-        // Movement using W, A, S, D keys
-        if (keyCode == KeyEvent.VK_W && velocityY == 0) { // Jump only when on the ground
+        // Jumping with W or Space bar
+        if ((keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_SPACE) && velocityY == 0) { // Jump only when on the ground
             velocityY = -25; // Set upward velocity for jumping
-        } else if (keyCode == KeyEvent.VK_A) {
+        }
+
+        // Movement using A, S, D keys
+        if (keyCode == KeyEvent.VK_A) {
             velocityX = -5; // Move left
             player.setFlipHorizontal(true); // Flip sprite horizontally
+            if (!isRunning) { // Switch to running animation only if not already running
+                player.setSpriteSheet("assets/Blue_witch/B_witch_run.png", 21, 41, true);
+                isRunning = true; // Update the animation state
+            }
         } else if (keyCode == KeyEvent.VK_S) {
             velocityY = 10; // Move down
         } else if (keyCode == KeyEvent.VK_D) {
             velocityX = 5; // Move right
             player.setFlipHorizontal(false); // Flip sprite horizontally
+            if (!isRunning) { // Switch to running animation only if not already running
+                player.setSpriteSheet("assets/Blue_witch/B_witch_run.png", 21, 41, true);
+                isRunning = true; // Update the animation state
+            }
+        }
+
+        // Attack with J key
+        if (keyCode == KeyEvent.VK_J && !player.isAnimationLocked()) {
+            isAttacking = true; // Start the attack animation
+            player.lockAnimation(); // Lock the animation
+            System.out.println("Not Allowed");
+            player.setSpriteSheet("assets/Blue_witch/B_witch_attack.png", 104, 45, true); // Switch to attack animation
+            player.setCurrentFrame(0); // Start at the first frame
         }
     }
 
@@ -281,7 +321,12 @@ public class Game extends JPanel implements Runnable, KeyListener {
 
         if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_D) {
             velocityX = 0; // Stop horizontal movement
+            if (isRunning) { // Switch back to idle animation only if previously running
+                player.setSpriteSheet("assets/Blue_witch/B_witch_idle.png", 21, 39, true);
+                isRunning = false; // Update the animation state
+            }
         }
+
         if (keyCode == KeyEvent.VK_S) {
             velocityY = 0; // Stop downward movement
         }

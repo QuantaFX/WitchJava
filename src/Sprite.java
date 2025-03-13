@@ -17,6 +17,7 @@ public class Sprite {
     private boolean flipHorizontal = false; // Indicates if the sprite should be flipped horizontally
 
     private int x, y; // Position of the sprite
+    private boolean isAnimationLocked = false; // Locks the animation until it completes
 
     public Sprite(String imagePath, int x, int y, int frameWidth, int frameHeight, int scaleFactor, boolean isVertical) {
         try {
@@ -33,6 +34,31 @@ public class Sprite {
         this.isVertical = isVertical;
 
         // Calculate the total number of frames in the sprite sheet
+        if (isVertical) {
+            this.totalFrames = spriteSheet.getHeight() / frameHeight; // Vertical layout
+        } else {
+            this.totalFrames = spriteSheet.getWidth() / frameWidth; // Horizontal layout
+        }
+    }
+
+    public void setSpriteSheet(String imagePath, int frameWidth, int frameHeight, boolean isVertical) {
+        try {
+            this.spriteSheet = ImageIO.read(new File(imagePath)); // Load a new sprite sheet
+            this.frameWidth = frameWidth;
+            this.frameHeight = frameHeight;
+            this.isVertical = isVertical;
+
+            // Recalculate the total number of frames
+            calculateTotalFrames();
+
+            this.currentFrame = 0; // Reset to the first frame
+        } catch (IOException e) {
+            System.err.println("Error loading sprite sheet: " + imagePath);
+            e.printStackTrace();
+        }
+    }
+
+    private void calculateTotalFrames() {
         if (isVertical) {
             this.totalFrames = spriteSheet.getHeight() / frameHeight; // Vertical layout
         } else {
@@ -124,5 +150,18 @@ public class Sprite {
 
     public boolean isFlippedHorizontal() {
         return flipHorizontal; // Get the flipHorizontal flag
+    }
+
+
+    public boolean isAnimationLocked() {
+        return isAnimationLocked;
+    }
+
+    public void lockAnimation() {
+        isAnimationLocked = true;
+    }
+
+    public void unlockAnimation() {
+        isAnimationLocked = false;
     }
 }
